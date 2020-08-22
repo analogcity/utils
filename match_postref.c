@@ -51,8 +51,12 @@ int main(int argc, char** argv)
 
 
         }
-        putc(*c,stdout);
-        c++;
+
+        if (*c)
+        {
+            putc(*c,stdout);
+            c++;
+        }
     }
 
     return 0;

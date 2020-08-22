@@ -41,9 +41,11 @@ int main(int argc, char** argv)
                 printf("</span>");
             }
         }
-
-        putc(*c, stdout);
-        c++;
+        if (*c)
+        {
+            putc(*c, stdout);
+            c++;
+        }
     }
 
     return 0;
