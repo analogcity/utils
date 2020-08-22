@@ -43,7 +43,7 @@ int main(int argc, char** argv)
             iter=0;
             fprintf(
                 stdout,
-                "<a href=\\\"%c%s\\\" onclick=\\\"highlight(\\'%s\\');\\\">%c%s</a>",
+                "<a href=\"%c%s\" onclick=\"highlight('%s');\">%c%s</a>",
                 MARK_CHAR, num, num, MARK_CHAR, num
                 );
             for (size_t i = 0; i < MAX_NUMBERS; num[i++]='\0');

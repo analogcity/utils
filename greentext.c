@@ -9,8 +9,7 @@
  */
 
 #define MARK_CHAR '>'
-#define START_END_LINE_TAG '<'
-#define END_END_LINE_TAG '>'
+#define END_LINE '\n'
 
 
 int main(int argc, char** argv)
@@ -31,19 +30,17 @@ int main(int argc, char** argv)
             {
                 c++;
                 print_at_end=1;
-                printf("<span class=\\\"green\\\">&gt;");
+                printf("<span class=\"green\">>");
             }
-        } else if (*c == START_END_LINE_TAG)
+        } else if (*c == END_LINE)
         {
+            start_line=1;
             if (print_at_end)
             {
                 print_at_end=0;
                 printf("</span>");
             }
-    
-        } else if (*c == END_END_LINE_TAG)
-            start_line=1;
-
+        }
 
         putc(*c, stdout);
         c++;
