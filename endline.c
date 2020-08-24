@@ -20,11 +20,12 @@ int main(int argc, char** argv)
 
     while (*c)
     {
-        if (*c == MARK_CHAR)
+        while (*c == MARK_CHAR)
         {
             printf(END_LINE);
             c++;
         }
+        
         
         if (*c)
         {
