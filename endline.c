@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     //
     for (;;s++) {
         if (*s == Mark) {
-            puts(str); // str + '\n'
+            fputs(str, stdout);
         } else  if (*s) {
             putc(*s, stdout);
         } else {
