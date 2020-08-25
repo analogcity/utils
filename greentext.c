@@ -37,6 +37,11 @@ main(int argc, char *argv[])
     char *s = argv[1];
     bool green = 0;
     //
+    if (*s == Mark) {
+        s += 1;
+        green = 1;
+        fputs(beg, stdout);
+    };
     for (;;) {
         if (*s == Newline) {
             if (green) {
