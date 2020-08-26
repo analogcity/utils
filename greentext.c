@@ -63,7 +63,7 @@ main(int argc, char *argv[])
         } else {
             if (green)
                 fputs(end, stdout);
-            putc(Newline, stdout); // trailing newline
+            //putc(Newline, stdout); // trailing newline
             return 0;
         };
     };
