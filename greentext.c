@@ -1,52 +1,70 @@
+// vim: expandtab
 #include <stdio.h>
-#include <inttypes.h>
+#include <stdbool.h>
 
-/**
- * Find lines that start with > line and replace them for
- * <span class="green">&gt; line</span>
- * 
- * Version 0.1
+/*
+ * Find lines that match /^>.*$/ and wrap them in:
+ *  - <span class="green">&gt;  </span>
+ *  - \Z2\Zb>  \Zn
+ *  - \e[32m>  \e[0m
+ *
+ * Version 0.2
  */
 
-#define MARK_CHAR '>'
-#define END_LINE '\n'
+
+#ifdef HTML_FORMAT
+  const char *beg = "<span class=\"green\">&gt;";
+  const char *end = "</span>";
+#elif defined SSH_FORMAT
+  const char *beg = "\\\\\\\\Z2\\\\\\\\Zb>";
+  const char *end = "\\\\\\\\Zn";
+#else /*terminal test*/
+  const char *beg = "\033[32m>";
+  const char *end = "\033[0m";
+#endif
 
 
-int main(int argc, char** argv)
+enum {
+    Mark    = '>',
+    Newline = '\n',
+};
+
+
+int
+main(int argc, char *argv[])
 {
-    if (argc != 2)
-        return 1;
-
-    char* c =  argv[1];
-    uint8_t start_line = 1;
-    uint8_t print_at_end = 0;
-
-    while (*c)
-    {
-        if (start_line)
-        {
-            start_line=0;
-            if (*c == MARK_CHAR)
-            {
-                c++;
-                print_at_end=1;
-                printf("<span class=\"green\">>");
-            }
-        } else if (*c == END_LINE)
-        {
-            start_line=1;
-            if (print_at_end)
-            {
-                print_at_end=0;
-                printf("</span>");
-            }
-        }
-        if (*c)
-        {
-            putc(*c, stdout);
-            c++;
-        }
-    }
-
-    return 0;
+    if (argc != 2) return 1;
+    char *s = argv[1];
+    bool green = 0;
+    //
+    if (*s == Mark) {
+        s += 1;
+        green = 1;
+        fputs(beg, stdout);
+    };
+    for (;;) {
+        if (*s == Newline) {
+            if (green) {
+                green = 0;
+                fputs(end, stdout);
+            };
+            putc(Newline, stdout);
+            if (*++s == Mark) {
+                green = 1;
+                fputs(beg, stdout);
+                for (s += 1; *s != Newline && *s; s += 1) {
+                    putc(*s, stdout);
+                }
+            };
+            continue;
+        };
+        if (*s) {
+            putc(*s++, stdout);
+        } else {
+            if (green)
+                fputs(end, stdout);
+            //putc(Newline, stdout); // trailing newline
+            return 0;
+        };
+    };
 }

@@ -8,31 +8,26 @@
  * Version 0.1
  */
 
-#define MARK_CHAR '\n'
-#define END_LINE "<br>"
+enum {
+    Mark = '\n',
+};
 
-int main(int argc, char** argv)
+const char *str = "<br>";
+
+
+int main(int argc, char *argv[])
 {
-    if (argc != 2)
-        return 1;
-
-    char* c =  argv[1];
-
-    while (*c)
-    {
-        while (*c == MARK_CHAR)
-        {
-            printf(END_LINE);
-            c++;
-        }
-        
-        
-        if (*c)
-        {
-            putc(*c, stdout);
-            c++;
-        }
+    if (argc != 2) return 1;
+    char *s =  argv[1];
+    //
+    for (;;s++) {
+        if (*s == Mark) {
+            fputs(str, stdout);
+        } else  if (*s) {
+            putc(*s, stdout);
+        } else {
+            break;
+        };
     }
-
     return 0;
 }

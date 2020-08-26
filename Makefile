@@ -1,11 +1,22 @@
 CC=gcc
+#CC=tcc
 
 all:
-	$(CC) match_postref.c -o ../bin/postref
-	$(CC) greentext.c -o ../bin/greentext
-	$(CC) endline.c -o ../bin/endline
-	$(CC) ssh_greentext.c -o ../bin/ssh_greentext
-	$(CC) ssh_postref.c -o ../bin/ssh_postref
+	mkdir -p bin
+	# greentext
+	$(CC) -DHTML_FORMAT greentext.c  -o bin/greentext
+	$(CC) -DSSH_FORMAT  greentext.c  -o bin/ssh_greentext
+	# postref
+	$(CC) -DHTML_FORMAT postref.c    -o bin/postref
+	$(CC) -DSSH_FORMAT  postref.c    -o bin/ssh_postref
+	# <br> in HTML
+	$(CC) -DHTML_FORMAT endline.c    -o bin/endline
+
+install: all
+	mv -f bin/* ../bin/
 
 clean:
+	rm bin/*
+
+uninstall:
 	rm ../bin/*
